@@ -18,14 +18,18 @@ export function SilosDashboardPage() {
   const stats = useMemo(() => {
     const activeCount = silos.filter((silo) => silo.status === 'ativo' || silo.status === 'atencao').length
     const attentionCount = silos.filter((silo) => silo.status === 'atencao').length
-    const averageHumidity = silos.length
+    const averageAirHumidity = silos.length
       ? silos.reduce((sum, silo) => sum + silo.umidadeRelativaPct, 0) / silos.length
+      : 0
+    const averagePeanutHumidity = silos.length
+      ? silos.reduce((sum, silo) => sum + silo.umidadeAmendoimPct, 0) / silos.length
       : 0
 
     return {
       activeCount,
       attentionCount,
-      averageHumidity,
+      averageAirHumidity,
+      averagePeanutHumidity,
     }
   }, [silos])
 
@@ -34,6 +38,7 @@ export function SilosDashboardPage() {
       <PageHeader
         title="Dashboard de Silos"
         description="Etapa 2: listar, selecionar, cadastrar e editar silos com indicadores mockados."
+        contextLabel="Desktop"
         actions={(
           <>
             <Button onClick={() => navigate('/silos/novo')}>Cadastrar Silo</Button>
@@ -45,10 +50,19 @@ export function SilosDashboardPage() {
         )}
       />
 
+      <Card className="status-highlight" padded={false}>
+        <div className="status-highlight-content">
+          <span className="status-chip">Secagem</span>
+          <strong>{stats.attentionCount > 0 ? `${stats.attentionCount} silo(s) em atencao` : 'Operacao dentro da faixa esperada'}</strong>
+          <span className="small-text">Atualizacao por dados mockados em tempo real</span>
+        </div>
+      </Card>
+
       <section className="stat-grid">
         <StatCard label="Silos ativos" value={String(stats.activeCount)} helper="Em operacao ou atencao" tone="success" />
         <StatCard label="Em atencao" value={String(stats.attentionCount)} helper="Prioridade no turno" tone={stats.attentionCount > 0 ? 'warning' : 'default'} />
-        <StatCard label="Umidade media" value={`${stats.averageHumidity.toFixed(1)}%`} helper="Referencia ambiental" />
+        <StatCard label="Umidade media do ar" value={`${stats.averageAirHumidity.toFixed(1)}%`} helper="Referencia ambiental" />
+        <StatCard label="Umidade media do amendoim" value={`${stats.averagePeanutHumidity.toFixed(1)}%`} helper="Indicador interno do silo" />
       </section>
 
       {silos.length === 0 ? (

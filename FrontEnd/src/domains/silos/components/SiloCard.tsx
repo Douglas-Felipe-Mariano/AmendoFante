@@ -44,19 +44,23 @@ function getStatusLabel(status: Silo['status']) {
 
 export function SiloCard({ silo, selected, onSelect, onEdit }: SiloCardProps) {
   return (
-    <Card className="card-section">
+    <Card className="card-section silo-card">
       <div className="silo-card-top">
         <div>
-          <h3>{silo.nome}</h3>
           <p className="small-text">{silo.codigo}</p>
+          <h3>{silo.nome}</h3>
         </div>
         <Badge variant={getStatusVariant(silo.status)}>{getStatusLabel(silo.status)}</Badge>
       </div>
 
       <div className="silo-card-metrics">
         <div className="metric-stack">
-          <span className="label">Umidade ar</span>
+          <span className="label">Umidade relativa do ar</span>
           <span className="value">{silo.umidadeRelativaPct.toFixed(1)}%</span>
+        </div>
+        <div className="metric-stack">
+          <span className="label">Umidade do amendoim</span>
+          <span className="value">{silo.umidadeAmendoimPct.toFixed(1)}%</span>
         </div>
         <div className="metric-stack">
           <span className="label">Temperatura</span>

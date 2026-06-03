@@ -1,5 +1,5 @@
 ﻿import type { FormEvent } from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { useAppStore } from '../../../app/store.ts'
@@ -16,6 +16,7 @@ type FormState = {
   capacidadeKg: string
   status: 'ativo' | 'atencao' | 'manutencao' | 'inativo'
   umidadeRelativaPct: string
+  umidadeAmendoimPct: string
   temperaturaC: string
   tempoEstimadoMin: string
   observacoes: string
@@ -27,6 +28,7 @@ const DEFAULT_FORM: FormState = {
   capacidadeKg: '',
   status: 'ativo',
   umidadeRelativaPct: '',
+  umidadeAmendoimPct: '',
   temperaturaC: '',
   tempoEstimadoMin: '',
   observacoes: '',
@@ -42,25 +44,23 @@ export function SiloFormPage() {
   const editingSilo = silos.find((silo) => silo.id === siloId)
   const isEditing = Boolean(siloId)
 
-  const [formState, setFormState] = useState<FormState>(DEFAULT_FORM)
-
-  useEffect(() => {
-    if (editingSilo) {
-      setFormState({
-        codigo: editingSilo.codigo,
-        nome: editingSilo.nome,
-        capacidadeKg: String(editingSilo.capacidadeKg),
-        status: editingSilo.status,
-        umidadeRelativaPct: String(editingSilo.umidadeRelativaPct),
-        temperaturaC: String(editingSilo.temperaturaC),
-        tempoEstimadoMin: String(editingSilo.tempoEstimadoMin),
-        observacoes: editingSilo.observacoes ?? '',
-      })
-      return
+  const [formState, setFormState] = useState<FormState>(() => {
+    if (!editingSilo) {
+      return DEFAULT_FORM
     }
 
-    setFormState(DEFAULT_FORM)
-  }, [editingSilo])
+    return {
+      codigo: editingSilo.codigo,
+      nome: editingSilo.nome,
+      capacidadeKg: String(editingSilo.capacidadeKg),
+      status: editingSilo.status,
+      umidadeRelativaPct: String(editingSilo.umidadeRelativaPct),
+      umidadeAmendoimPct: String(editingSilo.umidadeAmendoimPct),
+      temperaturaC: String(editingSilo.temperaturaC),
+      tempoEstimadoMin: String(editingSilo.tempoEstimadoMin),
+      observacoes: editingSilo.observacoes ?? '',
+    }
+  })
 
   const handleChange = (field: keyof FormState, value: string) => {
     setFormState((state) => ({ ...state, [field]: value }))
@@ -75,6 +75,7 @@ export function SiloFormPage() {
       capacidadeKg: Number(formState.capacidadeKg),
       status: formState.status,
       umidadeRelativaPct: Number(formState.umidadeRelativaPct),
+      umidadeAmendoimPct: Number(formState.umidadeAmendoimPct),
       temperaturaC: Number(formState.temperaturaC),
       tempoEstimadoMin: Number(formState.tempoEstimadoMin),
       observacoes: formState.observacoes.trim(),
@@ -164,6 +165,19 @@ export function SiloFormPage() {
               step="0.1"
               value={formState.umidadeRelativaPct}
               onChange={(event) => handleChange('umidadeRelativaPct', event.target.value)}
+              required
+            />
+          </label>
+
+          <label className="field">
+            <span className="field-label">Umidade do amendoim (%)</span>
+            <Input
+              type="number"
+              min={0}
+              max={100}
+              step="0.1"
+              value={formState.umidadeAmendoimPct}
+              onChange={(event) => handleChange('umidadeAmendoimPct', event.target.value)}
               required
             />
           </label>

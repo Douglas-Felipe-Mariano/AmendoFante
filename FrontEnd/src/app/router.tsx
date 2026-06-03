@@ -3,9 +3,13 @@
 import type { UserRole } from '../domains/auth/model.ts'
 import { LoginPage } from '../domains/auth/pages/LoginPage.tsx'
 import { ProfilePage } from '../domains/auth/pages/ProfilePage.tsx'
+import { AnalysesPage } from '../domains/batches/pages/AnalysesPage.tsx'
 import { BatchCreatePage } from '../domains/batches/pages/BatchCreatePage.tsx'
+import { BatchSummaryPage } from '../domains/batches/pages/BatchSummaryPage.tsx'
+import { FinalizationPage } from '../domains/batches/pages/FinalizationPage.tsx'
 import { BatchStartPage } from '../domains/batches/pages/BatchStartPage.tsx'
 import { MonitoringPage } from '../domains/batches/pages/MonitoringPage.tsx'
+import { HistoryPage } from '../domains/history/pages/HistoryPage.tsx'
 import { ManagerHomePage } from '../domains/manager/pages/ManagerHomePage.tsx'
 import { SiloFormPage } from '../domains/silos/pages/SiloFormPage.tsx'
 import { SilosDashboardPage } from '../domains/silos/pages/SilosDashboardPage.tsx'
@@ -63,9 +67,15 @@ export function AppRouter() {
             <Route path="/lotes/novo" element={<BatchCreatePage />} />
             <Route path="/lotes/:batchId/inicio" element={<BatchStartPage />} />
             <Route path="/lotes/:batchId/monitoramento" element={<MonitoringPage />} />
+            <Route path="/lotes/:batchId/analises" element={<AnalysesPage />} />
+            <Route path="/lotes/:batchId/finalizacao" element={<FinalizationPage />} />
+            <Route path="/lotes/:batchId/resumo" element={<BatchSummaryPage />} />
+
+            <Route path="/historico" element={<HistoryPage />} />
 
             <Route element={<RequireRole role="gestor" />}>
               <Route path="/gerencial" element={<ManagerHomePage />} />
+              <Route path="/gerencial/lotes/:batchId/resumo" element={<BatchSummaryPage managerMode />} />
             </Route>
           </Route>
         </Route>

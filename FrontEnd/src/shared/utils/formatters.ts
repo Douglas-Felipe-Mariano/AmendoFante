@@ -31,3 +31,11 @@ export function formatDateIso(dateISO: string): string {
 
   return format(parsed, 'dd/MM/yyyy')
 }
+
+export function formatCurrencyBRL(value: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+  }).format(value)
+}

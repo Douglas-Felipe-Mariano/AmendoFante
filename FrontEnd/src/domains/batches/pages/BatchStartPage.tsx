@@ -21,6 +21,10 @@ function getStatusVariant(status: string) {
     return 'warning'
   }
 
+  if (status === 'aguardando_analise') {
+    return 'danger'
+  }
+
   return 'default'
 }
 
@@ -88,17 +92,28 @@ export function BatchStartPage() {
             <strong>{formatPercent(batch.umidadeChegadaPct)}</strong>
           </div>
           <div className="data-row">
+            <span>Umidade relativa do ar (silo)</span>
+            <strong>{formatPercent(silo.umidadeRelativaPct)}</strong>
+          </div>
+          <div className="data-row">
+            <span>Umidade do amendoim (silo)</span>
+            <strong>{formatPercent(silo.umidadeAmendoimPct)}</strong>
+          </div>
+          <div className="data-row">
             <span>Status</span>
             <Badge variant={getStatusVariant(batch.status)}>{batch.status}</Badge>
           </div>
         </div>
 
         <div className="inline-actions" style={{ marginTop: 16 }}>
-          <Button onClick={handleStart} disabled={batch.status === 'secando'}>
-            {batch.status === 'secando' ? 'Secagem ja iniciada' : 'Iniciar secagem'}
+          <Button onClick={handleStart} disabled={batch.status === 'secando' || batch.status === 'finalizado'}>
+            {batch.status === 'secando' || batch.status === 'finalizado' ? 'Secagem ja iniciada' : 'Iniciar secagem'}
           </Button>
           <Button variant="secondary" onClick={() => navigate(`/lotes/${batch.id}/monitoramento`)}>
             Ir para monitoramento
+          </Button>
+          <Button variant="ghost" onClick={() => navigate(`/lotes/${batch.id}/analises`)}>
+            Ir para analises
           </Button>
         </div>
       </Card>

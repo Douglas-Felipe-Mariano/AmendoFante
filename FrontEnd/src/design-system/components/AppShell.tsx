@@ -29,10 +29,24 @@ export function AppShell({ children }: { children: ReactNode }) {
       label: 'Monitoramento',
       to: activeBatchId ? `/lotes/${activeBatchId}/monitoramento` : undefined,
     },
+    {
+      label: 'Analises',
+      to: activeBatchId ? `/lotes/${activeBatchId}/analises` : undefined,
+    },
+    {
+      label: 'Finalizacao',
+      to: activeBatchId ? `/lotes/${activeBatchId}/finalizacao` : undefined,
+    },
+    {
+      label: 'Resumo do Lote',
+      to: activeBatchId ? `/lotes/${activeBatchId}/resumo` : undefined,
+    },
+    { label: 'Historico', to: '/historico' },
   ]
 
   const managerItems: NavigationItem[] = [
     { label: 'Painel Gerencial', to: '/gerencial' },
+    { label: 'Historico', to: '/historico' },
     { label: 'Dashboard de Silos', to: '/silos' },
   ]
 

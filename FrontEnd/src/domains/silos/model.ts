@@ -7,6 +7,7 @@ export interface Silo {
   capacidadeKg: number
   status: SiloStatus
   umidadeRelativaPct: number
+  umidadeAmendoimPct: number
   temperaturaC: number
   tempoEstimadoMin: number
   observacoes?: string
